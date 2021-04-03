@@ -1,0 +1,53 @@
+# Détails et spécification du service
+apiVersion: v1                                # Version de API
+kind: Service                                 # Quel type d'objet vous voulez créer
+metadata:                                     # Données permettant d'identifier l'objet de manière unique     
+  name: nginx                                   # Nom pour identifier le service
+  annotations:
+    metallb.universe.tf/allow-shared-ip: "ft_services"
+spec:                                       # Quelle spécification vous désirez pour l'objet
+  type: LoadBalancer                            # Type de service
+  selector:
+    app: nginx                                  # Indique les pods qui le service va exposer (ayant le label "app:nginx")
+  ports:                                    # Liste des ports exposees du services
+    - name: http                                # DNS du port   
+      port: 80                                  # Le SERVICE exposee le port 80 dans le cluster
+      targetPort: 80                            # et mappe sur le port 80 du POD 
+      protocol: TCP                             # Protocole de traitement du port
+    - name: https
+      port: 443
+      protocol: TCP
+      targetPort: 443
+    - name: ssh
+      port: 22
+      protocol: TCP
+      targetPort: 22
+
+---
+
+# Détails et spécification du déploiement
+apiVersion: apps/v1                           # Version de API apps/v1 est la version qui prend en charge le concept des ReplicaSet
+kind: Deployment                             # Quel type d'objet vous voulez créer 
+metadata:                                     # Données permettant d'identifier l'objet de manière unique
+  name: nginx                               # Nom pour identifier le service
+  labels: 
+    app: nginx
+spec:                                       # Quelle configuration vous désirez pour le ReplicaSet
+  replicas: 1                                  # Nombre de replicas (Nombre de pod identique creer par ce doiploiment)
+  selector:                                   # Cle selector pour definir quel pod sera gérer par le ReplicaSet
+    matchLabels:                                 # Condition de correspondance qui consite a repliquer
+      app: nginx                                  # les pods ayant le LABEL app VALEUR nginx
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: nginx   
+    spec:                                    # Quelle configuration vous désirez
+      containers:                             #  pour les containers
+      - name: nginx                             # Nom donnee au container
+        image: service_nginx                      # Nom de l'image utilisé
+        imagePullPolicy: Never                    # Forcage de la recuperation de l'image sur le DockerHub

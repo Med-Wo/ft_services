@@ -1,0 +1,45 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: wordpress
+  name: wordpress
+  annotations:
+    metallb.universe.tf/allow-shared-ip: "ft_services"
+spec:
+  type: LoadBalancer
+  selector:
+    app: wordpress
+  ports:
+  - name: wordpress
+    port: 5050
+    protocol: TCP
+    targetPort: 5050
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wordpress
+  labels:
+    app: wordpress
+spec:                                       # Specification du deploiment 
+  replicas: 1                                 # Nombre de replicas identique creer (POD)
+  selector:                                   # CLE selector qui permets de specifier les pods gerer par le deploiments
+    matchLabels:                                # qui possede le meme label avec la
+      app: wordpress                             # CLE 'app' et VALEUR 'wordpress'
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:                                   # Specification template des pods qui seront generer par le deploiment
+    metadata:                                   # Donnee informative relative au pod
+      labels:                                     # Etiquette du pod (LABEL)
+        app: wordpress                             # CLE 'app' et VALEUR 'wordpress'
+    spec:                                       # Specification d'un pods
+      containers:                                 # Specification du containeur
+      - image: service_wordpress                 # Image docker utiliser pour la creation du pod
+        imagePullPolicy: Never                      # Forcage de la recuperation de l'image sur le DockerHub
+        name: wordpress                            # Nom donnee au containeur

@@ -1,0 +1,52 @@
+# Image sous laquel le container est basee
+FROM alpine:latest
+
+# Indique le createur et diverses informations concernant le container
+LABEL maintainer="mravily@student.42.fr"
+LABEL version="v0.4"
+LABEL description="Container run on Alpine Linux for MySQL used like service pod Kubernetes"
+
+# Mettre à jour l'index des packages disponibles  
+RUN apk update 
+
+# Installe les packages pour la generation de la cle SSL et MySQL
+RUN apk add openssl
+RUN apk add mariadb mariadb-client
+
+# Creation d'un dossier pour les cle et certificat SSL
+RUN	mkdir -p /run/mysqld
+
+# Generation d'une cle RSA 2048 bits pour notre Autorite de Certification (CA)
+RUN openssl genrsa -out /etc/mysql/mysqlcerts/ca-key.pem 2048
+
+# Requete de chiffrement pour la cle prive de notre Autorite de Certification avec la cle RSA
+RUN openssl req -new -x509 -nodes -days 3600 \
+		-key /etc/mysql/mysqlcerts/ca-key.pem \		
+		-out /etc/mysql/mysqlcerts/ca.pem \
+		-subj '/ST=France/L=Paris/O=42/CN=CA_MySQL'
+
+# Creation d'un cle de chiffrement pour le serveur
+RUN openssl req -newkey rsa:2048 -days 3600 -nodes \
+		-keyout /etc/mysql/mysqlcerts/server-key.pem \
+		-out /etc/mysql/mysqlcerts/server-req.pem \
+		-subj '/ST=France/L=Paris/O=42/CN=CA_MySQL'
+	
+# Separation de la cle publique de la cle privee
+RUN openssl rsa -in /etc/mysql/mysqlcerts/server-key.pem -out /etc/mysql/mysqlcerts/server-key.pem
+
+# Creation de la cle SSL, et le certificat pour notre serveur 
+RUN openssl x509 -req -in /etc/mysql/mysqlcerts/server-req.pem -days 3600 \
+		-CA /etc/mysql/mysqlcerts/ca.pem \
+		-CAkey /etc/mysql/mysqlcerts/ca-key.pem -set_serial 01 \
+		-out /etc/mysql/mysqlcerts/server-cert.pem
+
+# Copie des fichiers dans le container
+COPY	/srcs/my.cnf /etc/
+COPY 	/srcs/config.sql /
+#COPY	/srcs/wordpress.sql /
+COPY	/srcs/start_service.sh /
+
+# Expose le port 3306 du container
+EXPOSE 3306
+
+ENTRYPOINT ["sh", "start_service.sh"]

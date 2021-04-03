@@ -1,0 +1,66 @@
+apiVersion: v1
+kind: Service                           # Type d'objet
+metadata:                               # Données permettant d'identifier l'objet de manière unique
+  name: mysql                           # Nom de l'objet
+  labels:                                 # Label (Etiquette) de notre objet
+    app: mysql-app                              # CLE app VALEUR mysql_app
+spec:                                   # Specification de notre service
+  type: ClusterIP                         # Type du service
+  selector:                               # Les Pods ayant CLE app VALEUR mysql seront expose par le service
+    app: mysql-app
+  ports:                                  # Port utilise par notre service
+    - name: mysql                           # Nom DNS du port
+      port: 3306                              # Port utilise
+      protocol: TCP                           # Protocole utilise par le port
+      targetPort: 3306                        # Flux rediriger sur ce port
+
+---
+# Declaration des informations pour la creation du PersitantVolumeClaim
+apiVersion: v1                          # Version de l'API
+kind: PersistentVolumeClaim             # Type d'objet
+metadata:                               # Données permettant d'identifier l'objet de manière unique
+  name: mysql-pvc                    # Nom de l'objet
+  labels:                                 # LABEL (Etiquette) de l'objet
+    app: mysql-app                          # CLE app VALEUR mysql_app 
+spec:                                   # Specification du PersitantVolumeClaim
+  accessModes:                            # Mode d'acces
+  - ReadWriteOnce                         # le volume peut être monté en lecture-écriture par un seul nœud
+  resources:                              # Ressources demander par le PVC
+    requests:                               # Demande du PVC
+      storage: 1Gi                            # Quantite du stockage
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql-deploy
+  labels:
+    app: mysql-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mysql-app
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: mysql-app
+    spec:
+      restartPolicy: Always
+      containers:
+      - image: service_mysql
+        imagePullPolicy: Never
+        name: mysql
+        ports:
+        - name: mysql
+          containerPort: 3306
+        volumeMounts:
+        - name: mysql-persistent-storage
+          mountPath: var/lib/mysql
+      volumes:
+        - name: mysql-persistent-storage
+          persistentVolumeClaim:
+            claimName: mysql-pvc
