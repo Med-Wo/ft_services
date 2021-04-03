@@ -1,20 +1,29 @@
 #! /bin/sh
 
-# Install MariaDB database(mariadb-install-db is a symlink to mysql_install_db).
+if [[ ! -d /run/mysqld/ ]]; then
+	mkdir -p /run/mysqld/
+fi
+# Install la DB MariaDB.
 mariadb-install-db -u root
 
-# Invoking "mysqld" will start the MySQL server. Terminating "mysqld" will shutdown the MySQL server.
-mysqld -u root & sleep 5
+# Lance en arriere-plan le Deamon MySQL pour start le server MySQL.
+mysqld &
 
-# Create Wordpress database.
+# Creer un DB pour Worpress
 mysql -u root --execute="CREATE DATABASE wordpress;"
 
 # Import previously backed up database to MariaDB database server (wordpress < /wordpress.sql).
 #mysql -u root wordpress < wordpress.sql
 
-# Create new user "root" with password "toor" and give permissions.
-mysql -u root --execute="CREATE USER 'root'@'%' IDENTIFIED BY 'toor'; GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' WITH GRANT OPTION; USE wordpress; FLUSH PRIVILEGES;"
+# Creer un nouvelle utilisateur et lui accorde les priviliges pour manager la DB.
+mysql -u root --execute="CREATE USER 'root'@'%' IDENTIFIED BY 'toor';"
+mysql -u root --execute="GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' WITH GRANT OPTION;"
+mysql -u root --execute="USE wordpress;"
+mysql -u root --execute="FLUSH PRIVILEGES;"
 
-# Start Telegraf and sleep infinity for avoid container to stop.
-sleep infinite
+# Kill le process MySQL Deamon
+pkill mysqld
+
+# Lance le Deamon MySQL
+mysqld
 
