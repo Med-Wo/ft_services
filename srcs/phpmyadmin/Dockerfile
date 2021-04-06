@@ -13,9 +13,9 @@ RUN apk add openssl
 
 # Telecharge et installe les different package necessaire a PhpMyAdmin
 RUN apk add nginx wget php7 php7-fpm php7-mysqli php7-mbstring php7-json php7-session
+
 # Telecharge le l'archive du code source de phpmyAdmin
 RUN wget http://files.directadmin.com/services/all/phpMyAdmin/phpMyAdmin-5.0.4-all-languages.tar.gz
-
 
 
 # Decompress l'archive
