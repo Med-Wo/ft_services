@@ -20,8 +20,6 @@ $cfg['Servers'][$i]['controluser'] = 'root';
 $cfg['Servers'][$i]['controlpass'] = 'toor';
 /* Parametre du server */
 $cfg['Servers'][$i]['host'] = 'mysql';
-$cfg['Servers'][$i]['ssl'] = false;
-$cfg['Servers'][$i]['AllowNoPassword'] = false;
 
 /**
  * Répertoires pour l'enregistrement/le chargement de fichiers à partir du serveur

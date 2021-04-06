@@ -14,8 +14,8 @@ RUN		apk add mariadb mariadb-client
 
 RUN		mkdir -p /run/mysqld/
 
-COPY	/srcs/my.cnf			/etc/
-#COPY	/srcs/wordpress.sql		/
+COPY	/srcs/my.cnf					/etc/
+#COPY	/srcs/wordpress.sql				/
 COPY	/srcs/start_service.sh			/
 
 EXPOSE 3306
