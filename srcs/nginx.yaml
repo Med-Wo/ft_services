@@ -8,7 +8,7 @@ metadata:                                                   # Données permettan
 spec:                                                       # Quelle spécification vous désirez pour l'objet
   type: LoadBalancer                                          # Type de service
   selector:                                                   # Cle selector pour definir quel pod sera gérer par le service
-    app: nginx-deploy                                       # Indique les pods qui le service va exposer (ayant le label "app:nginx-deploy")
+    app: nginx-deploy                                           # Indique les pods qui le service va exposer (ayant le label "app:nginx-deploy")
   ports:                                                    # Liste des ports exposees du services
     - name: http                                            # DNS du port   
       port: 80                                                # Le SERVICE exposee le port 80 dans le cluster
@@ -44,7 +44,7 @@ spec:                                                       # Quelle configurati
       labels:                                                     # Labels (Étiquette)       
         app: nginx-deploy                                         # CLE=app VALEUR=nginx-deploy
     spec:                                                       # Quelle configuration vous désirez
-      containers:                                                 #  pour les containers
+      containers:                                                 # pour les containers
       - name: nginx                                               # Nom donnée au container
         image: service_nginx                                        # Nom de l'image utilisé
         imagePullPolicy: Never                                      # Forcage de la recuperation de l'image sur le DockerHub

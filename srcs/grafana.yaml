@@ -1,45 +1,42 @@
-apiVersion: v1
-kind: Service
-metadata:
-  labels:
-    app: grafana
-  name: grafana
-  annotations:
-    metallb.universe.tf/allow-shared-ip: "ft_services"
-spec:
-  type: LoadBalancer
-  selector:
-    app: grafana
-  ports:
-  - name: grafana
-    port: 3000
-    protocol: TCP
-    targetPort: 3000
+# Détails et spécification du service
+apiVersion: v1                                              # Version de API
+kind: Service                                               # Quel type d'objet vous voulez créer
+metadata:                                                   # Données permettant d'identifier le service de maniere unique
+  name: grafana-svc                                           # Nom pour identifier le service
+  annotations:                                                # Permets d'attacher des métadonnées, récupérable par des outils et bibliothèques.
+    metallb.universe.tf/allow-shared-ip: "ft_services"          # Cle de partage pour colocaliser les services sur la meme IP
+spec:                                                       # Quelle spécification vous désirez pour l'objet
+  type: LoadBalancer                                          # Type de service
+  selector:                                                   # Cle selector pour definir quel pod sera gérer par le service
+    app: grafana-deploy                                         # Indique les pods qui le service va exposer (ayant le label "app:grafana-deploy")
+  ports:                                                      # Liste des ports exposees du services
+  - name: grafana                                             # DNS du port  
+    port: 3000                                                  # Le SERVICE exposee le port 3000 dans le cluster
+    protocol: TCP                                               # et mappe sur le port 3000 du POD
+    targetPort: 3000                                            # Protocole de traitement du port
 
 ---
 
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: grafana
-  labels:
-    app: grafana
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: grafana
-  strategy:
-    rollingUpdate:
-      maxSurge: 25%
-      maxUnavailable: 25%
-    type: RollingUpdate
-  template:
-    metadata:
-      labels:
-        app: grafana
-    spec:
-      containers:
-      - image: service_grafana
-        imagePullPolicy: Never
-        name: grafana
+# Détails et spécification du déploiement
+apiVersion: apps/v1                                         # Version de API apps/v1 est la version qui prend en charge le concept des ReplicaSet
+kind: Deployment                                            # Quel type d'objet vous voulez créer 
+metadata:                                                   # Données permettant d'identifier l'objet de manière unique
+  name: grafana-deploy                                        # Nom pour identifier le déploiement
+  labels:                                                     # Etiquette du déploiement
+    app: grafana-deploy                                         # CLE=app VALEUR=gafana-deploy
+spec:                                                       # Quelle configuration vous désirez pour le ReplicaSet
+  replicas: 1                                                 # Nombre de replicas (Nombre de pod identique creer par ce doiploiment)
+  selector:                                                   # Cle selector pour definir quel pod sera gérer par le ReplicaSet
+    matchLabels:                                                # Condition de correspondance qui consite a repliquer
+      app: grafana-deploy                                         # les pods ayant le LABEL app VALEUR grafana-deploy
+  strategy:                                                   # Spécifie la stratégie utilisée pour remplacer les anciens pods par de nouveaux
+    type: Recreate                                              # Tous les pods existants sont tués avant que de nouveaux ne soient créés
+  template:                                                   # Gestion par le déploiement des pods respectant ce modèle
+    metadata:                                                   # Pods utilisisant les metadatas suivantes
+      labels:                                                   # Labels (Étiquette)
+        app: grafana-deploy                                       # CLE=app VALEUR=grafana-deploy
+    spec:                                                       # Quelle configuration vous désirez
+      containers:                                               # pour les containers
+      - name: grafana                                             # Nom donnée au container
+        image: service_grafana                                      # Nom de l'image utilisé
+        imagePullPolicy: Never                                      # Forcage de la recuperation de l'image sur le DockerHub
