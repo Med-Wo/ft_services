@@ -33,7 +33,7 @@ metadata:                                                   # Données permettan
   labels:                                                     # Etiquette du déploiement
     app: nginx-deploy                                           # CLE=app VALEUR=nginx-deploy
 spec:                                                       # Quelle configuration vous désirez pour le ReplicaSet
-  replicas: 1                                                 # Nombre de replicas (Nombre de pod identique creer par ce doiploiment)
+  replicas: 1                                                 # Nombre de replicas (Nombre de pod identique creer par ce déploiement)
   selector:                                                   # Cle selector pour definir quel pod sera gérer par le ReplicaSet
     matchLabels:                                                # Condition de correspondance qui consite a repliquer
       app: nginx-deploy                                           # les pods ayant le LABEL app VALEUR nginx-deploy
@@ -42,7 +42,7 @@ spec:                                                       # Quelle configurati
   template:                                                   # Gestion par le déploiement des pods respectant ce modèle
     metadata:                                                   # Pods utilisisant les metadatas suivantes
       labels:                                                     # Labels (Étiquette)       
-        app: nginx-deploy                                         # CLE=app VALEUR=nginx-deploy
+        app: nginx-deploy                                           # CLE=app VALEUR=nginx-deploy
     spec:                                                       # Quelle configuration vous désirez
       containers:                                                 # pour les containers
       - name: nginx                                               # Nom donnée au container
