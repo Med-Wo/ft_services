@@ -70,16 +70,16 @@ spec:                                                       # Quelle configurati
               secretKeyRef:                                             # La variable d'environnement qui consomme la clé secrète
                 name: influxdb-secret                                     # Nom de la clé secrète
                 key: influxdb_config_path                                 # Cle utiliser
-          - name: INFLUXDB_ADMIN_USER                                 # Nom donnée a la variable environnements dans le pod
-            valueFrom:                                                  # D'ou provient la valeur utiliser
-              secretKeyRef:                                               # La variable d'environnement qui consomme la clé secrète
-                name: influxdb-secret                                       # Nom de la clé secrète
-                key: influxdb_admin_user                                    # Cle utiliser
-          - name: INFLUXDB_ADMIN_PASSWORD                             # Nom donnée a la variable environnements dans le pod
-            valueFrom:                                                  # D'ou provient la valeur utiliser
-              secretKeyRef:                                               # La variable d'environnement qui consomme la clé secrète
-                name: influxdb-secret                                       # Nom de la clé secrète
-                key: influxdb_admin_password                                # Cle utiliser
+          - name: INFLUXDB_ADMIN_USER                                 
+            valueFrom:                                                  
+              secretKeyRef:                                               
+                name: influxdb-secret                                       
+                key: influxdb_admin_user                                    
+          - name: INFLUXDB_ADMIN_PASSWORD                             
+            valueFrom:                                                  
+              secretKeyRef:                                               
+                name: influxdb-secret                                       
+                key: influxdb_admin_password                                
       restartPolicy: Always                                         # Politique de redémarrage du pod
       volumes:                                                      # Volume utiliser par le pod
       - name: influxdb-persistent-storage                             # Nom du volume

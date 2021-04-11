@@ -19,7 +19,7 @@ $cfg['Servers'][$i]['port'] = '3306';
 $cfg['Servers'][$i]['controluser'] = 'root';
 $cfg['Servers'][$i]['controlpass'] = 'toor';
 /* Parametre du server */
-$cfg['Servers'][$i]['host'] = 'mysql';
+$cfg['Servers'][$i]['host'] = 'mysql-svc';
 
 /**
  * Répertoires pour l'enregistrement/le chargement de fichiers à partir du serveur

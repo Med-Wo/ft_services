@@ -36,10 +36,10 @@ RUN mv phpMyAdmin-5.0.4-all-languages /var/www/phpmyadmin
     # on condense le message en SHA-256
     # et pour finir on defini des informations pour notre certifcats (Pays, Ville, Organisation et Nom)
 RUN openssl req -x509 -days 90 \
-    -out /etc/ssl/certs/phpMyAdmin.crt \
-    -keyout /etc/ssl/phpMyAdmin.key \
-    -newkey rsa:4096 -nodes -sha256 \
-    -subj '/ST=France/L=Paris/O=42/CN=phpMyAdmin'
+        -out /etc/ssl/certs/phpMyAdmin.crt \
+        -keyout /etc/ssl/phpMyAdmin.key \
+        -newkey rsa:4096 -nodes -sha256 \
+        -subj '/ST=France/L=Paris/O=42/CN=phpMyAdmin'
 
 
 # Copie les fichiers dans le container

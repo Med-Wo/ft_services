@@ -1,45 +1,41 @@
-apiVersion: v1
-kind: Service
-metadata:
-  labels:
-    app: wordpress
-  name: wordpress
-  annotations:
-    metallb.universe.tf/allow-shared-ip: "ft_services"
-spec:
-  type: LoadBalancer
-  selector:
-    app: wordpress
-  ports:
-  - name: wordpress
-    port: 5050
-    protocol: TCP
-    targetPort: 5050
+# Détails et spécification du service
+apiVersion: v1                                                    # Version de API
+kind: Service                                                     # Quel type d'objet vous voulez créer
+metadata:                                                         # Données permettant d'identifier le service de maniere unique
+  name: wordpress-svc                                               # Nom pour identifier le service
+  annotations:                                                      # Permets d'attacher des métadonnées, récupérable par des outils et bibliothèques. 
+    metallb.universe.tf/allow-shared-ip: "ft_services"                # Cle de partage pour colocaliser les services sur la meme IP
+spec:                                                             # Quelle spécification vous désirez pour l'objet
+  type: LoadBalancer                                                # Type de service
+  selector:                                                         # Cle selector pour definir quel pod sera gérer par le service
+    app: wordpress-deploy                                             # Indique les pods qui le service va exposer (ayant le label "app:wordpress-deploy")
+  ports:                                                            # Liste des ports exposees du services
+  - name: wordpress                                                 # DNS du port        
+    port: 5050                                                        # Le SERVICE exposee le port 5050 dans le cluster
+    targetPort: 5050                                                  # et mappe sur le port 5050
+    protocol: TCP                                                     # Protocole de traitement du port
 
 ---
 
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: wordpress
-  labels:
-    app: wordpress
-spec:                                       # Specification du deploiment 
-  replicas: 1                                 # Nombre de replicas identique creer (POD)
-  selector:                                   # CLE selector qui permets de specifier les pods gerer par le deploiments
-    matchLabels:                                # qui possede le meme label avec la
-      app: wordpress                             # CLE 'app' et VALEUR 'wordpress'
-  strategy:
-    rollingUpdate:
-      maxSurge: 25%
-      maxUnavailable: 25%
-    type: RollingUpdate
-  template:                                   # Specification template des pods qui seront generer par le deploiment
-    metadata:                                   # Donnee informative relative au pod
-      labels:                                     # Etiquette du pod (LABEL)
-        app: wordpress                             # CLE 'app' et VALEUR 'wordpress'
-    spec:                                       # Specification d'un pods
-      containers:                                 # Specification du containeur
-      - image: service_wordpress                 # Image docker utiliser pour la creation du pod
-        imagePullPolicy: Never                      # Forcage de la recuperation de l'image sur le DockerHub
-        name: wordpress                            # Nom donnee au containeur
+# Détails et spécification du déploiement
+apiVersion: apps/v1                                               # Version de API apps/v1 est la version qui prend en charge le concept des ReplicaSet
+kind: Deployment                                                  # Quel type d'objet vous voulez créer                
+metadata:                                                         # Données permettant d'identifier l'objet de manière unique
+  name: wordpress-deploy                                            # Nom pour identifier le déploiement
+  labels:                                                           # Etiquette du déploiement
+    app: wordpress-deploy                                             # CLE=app VALEUR=wordpress-deploy
+spec:                                                             # Specification du deploiment 
+  selector:                                                       # CLE selector qui permets de specifier les pods gerer par le deploiments
+    matchLabels:                                                    # qui possede le meme label avec la
+      app: wordpress-deploy                                           # CLE 'app' et VALEUR 'wordpress'
+  strategy:                                                       # Spécifie la stratégie utilisée pour remplacer les anciens pods par de nouveaux
+    type: Recreate                                                  # Tous les pods existants sont tués avant que de nouveaux ne soient créés
+  template:                                                       # Gestion par le déploiement des pods respectant ce modèle
+    metadata:                                                       # Pods utilisisant les metadatas suivantes
+      labels:                                                         # Labels (Étiquette) 
+        app: wordpress-deploy                                           # CLE=app VALEUR=wordpress-deploy
+    spec:                                                           # Quelle configuration vous désirez
+      containers:                                                     # pour les containers
+      - name: wordpress                                                 # Nom donnée au container
+        image: service_wordpress                                        # Nom de l'image utilisé
+        imagePullPolicy: Never                                          # Forcage de la recuperation de l'image sur le DockerHub

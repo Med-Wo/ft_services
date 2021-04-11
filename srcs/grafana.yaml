@@ -25,7 +25,6 @@ metadata:                                                   # Données permettan
   labels:                                                     # Etiquette du déploiement
     app: grafana-deploy                                         # CLE=app VALEUR=gafana-deploy
 spec:                                                       # Quelle configuration vous désirez pour le ReplicaSet
-  replicas: 1                                                 # Nombre de replicas (Nombre de pod identique creer par ce doiploiment)
   selector:                                                   # Cle selector pour definir quel pod sera gérer par le ReplicaSet
     matchLabels:                                                # Condition de correspondance qui consite a repliquer
       app: grafana-deploy                                         # les pods ayant le LABEL app VALEUR grafana-deploy

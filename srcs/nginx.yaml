@@ -33,7 +33,6 @@ metadata:                                                   # Données permettan
   labels:                                                     # Etiquette du déploiement
     app: nginx-deploy                                           # CLE=app VALEUR=nginx-deploy
 spec:                                                       # Quelle configuration vous désirez pour le ReplicaSet
-  replicas: 1                                                 # Nombre de replicas (Nombre de pod identique creer par ce déploiement)
   selector:                                                   # Cle selector pour definir quel pod sera gérer par le ReplicaSet
     matchLabels:                                                # Condition de correspondance qui consite a repliquer
       app: nginx-deploy                                           # les pods ayant le LABEL app VALEUR nginx-deploy
@@ -45,6 +44,6 @@ spec:                                                       # Quelle configurati
         app: nginx-deploy                                           # CLE=app VALEUR=nginx-deploy
     spec:                                                       # Quelle configuration vous désirez
       containers:                                                 # pour les containers
-      - name: nginx                                               # Nom donnée au container
+      - name: nginx                                                 # Nom donnée au container
         image: service_nginx                                        # Nom de l'image utilisé
         imagePullPolicy: Never                                      # Forcage de la recuperation de l'image sur le DockerHub

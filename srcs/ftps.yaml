@@ -33,7 +33,6 @@ metadata:                                                  # Données permettant
   labels:                                                   # Etiquette du déploiement
     app: ftps-deploy                                          # CLE=app VALEUR=ftps-deploy
 spec:                                                      # Quelle configuration vous désirez pour le ReplicaSet
-  replicas: 1                                               # Nombre de replicas (Nombre de pod identique creer par ce doiploiment)
   selector:                                                 # Cle selector pour definir quel pod sera gérer par le ReplicaSet
     matchLabels:                                              # Condition de correspondance qui consite a repliquer
       app: ftps-deploy                                        # les pods ayant le LABEL app VALEUR ftps-deploy

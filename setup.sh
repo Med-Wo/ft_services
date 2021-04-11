@@ -29,7 +29,7 @@ sed -i.bak "s/IP/"$SERVER_IP"/g" srcs/nginx/srcs/index.html > /dev/null
 # Incluant à la fois l'erreur standard et la sortie standard
 echo "${CYAN}🐳${END}  ${BLUE}Build des images Docker...${END}"
 docker build -t service_nginx ./srcs/nginx > /dev/null 2>&1
-docker build -t service_mysql ./srcs/mysql > /dev/null 2>&1
+docker build -t service_mysql ./srcs/mysql 
 docker build -t service_phpmyadmin ./srcs/phpmyadmin > /dev/null 2>&1
 docker build -t service_wordpress ./srcs/wordpress > /dev/null 2>&1
 docker build -t service_ftps ./srcs/ftps > /dev/null 2>&1
@@ -52,7 +52,7 @@ echo "${RED}🚀${END}  ${BLUE}Creation des differents pods/services...${END}"
 kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.9.5/manifests/namespace.yaml > /dev/null 2>&1
 kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.9.5/manifests/metallb.yaml > /dev/null 2>&1
 kubectl apply -f srcs/metallb-configmap.yaml > /dev/null 2>&1
-kubectl apply -f srcs/mysql.yaml > /dev/null 2>&1
+kubectl apply -f srcs/mysql.yaml
 kubectl apply -f srcs/phpmyadmin.yaml > /dev/null 2>&1
 kubectl apply -f srcs/wordpress.yaml > /dev/null 2>&1
 kubectl apply -f srcs/ftps.yaml > /dev/null 2>&1
