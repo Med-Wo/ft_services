@@ -17,7 +17,7 @@ RUN		mkdir -p /run/mysqld/
 
 # Copie les fichiers de configurations dans le container
 COPY	/srcs/my.cnf					/etc/
-#COPY	/srcs/wordpress.sql				/
+COPY	/srcs/wordpress.sql				/
 COPY	/srcs/start_service.sh			/
 
 # Expose le port du container

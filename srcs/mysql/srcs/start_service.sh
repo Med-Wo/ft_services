@@ -10,7 +10,7 @@ mysqld -u root & sleep 5
 mysql -u root --execute="CREATE DATABASE wordpress;"
 
 # Configure la DB Wordpress.
-#mysql -u root wordpress < wordpress.sql
+mysql -u root wordpress < wordpress.sql
 
 # Creation d'un nouvelle utilisateur pour la gestion de la DB Wordpress.
 mysql -u root --execute="CREATE USER 'root'@'%' IDENTIFIED BY 'toor'; GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' WITH GRANT OPTION;"
