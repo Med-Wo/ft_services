@@ -9,19 +9,16 @@ spec:                                                       # Quelle spécificat
   type: LoadBalancer                                          # Type de service
   selector:                                                   # Cle selector pour definir quel pod sera gérer par le service
     app: ftps-deploy                                            # Indique les pods qui le service va exposer (ayant le label "app:ftps-deploy")               
-  ports:                                                      # Liste des ports exposees du services
-  - name: data                                                # DNS du port 
-    port: 20                                                    # Le SERVICE exposee le port 20 dans le cluster
-    targetPort: 20                                              # et mappe sur le port 80 du POD
-    protocol: TCP                                               # Protocole de traitement du port                      
+  ports:                                                      # Liste des ports exposees du services                 
   - name: ftps  
     port: 21
-    protocol: TCP
     targetPort: 21
-  - name: ftps-pasv
-    port: 40000
-    protocol: TCP
-    targetPort: 40000
+  - port: 4200
+    targetPort: 4200
+    name: ftps-pasv-min
+  - port: 4201
+    targetPort: 4201
+    name: ftps-pasv-max
   
 ---
 
@@ -47,3 +44,22 @@ spec:                                                      # Quelle configuratio
       - name: ftps                                              # Nom de l'image utilisé
         image: service_ftps                                       # Nom de l'image utilisé
         imagePullPolicy: Never                                    # Forcage de la recuperation de l'image sur le DockerHub
+        ports:
+          - containerPort: 21
+            name: "ftps"
+          - containerPort: 4200
+            name: "ftps-pasv-min"
+          - containerPort: 4201
+            name: "ftps-pasv-max"
+        volumeMounts:
+          - name: config
+            mountPath: "/etc/vsftpd"
+          - name: tls
+            mountPath: "/etc/ssl"
+      volumes:
+      - name: config
+        configMap:
+          name: ftps-config
+      - name: tls
+        secret:
+          secretName: ftps-ssl
