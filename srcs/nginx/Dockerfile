@@ -39,13 +39,13 @@ COPY /srcs/start_service.sh     /
 
 # Copie les fichier pour l'index dans le container
 COPY /srcs/images/              /var/www/images
-#COPY /srcs/Home.css             /var/www/
-#COPY /srcs/Home.html            /var/www/
+COPY /srcs/Home.css             /var/www/
+COPY /srcs/Home.html            /var/www/
 COPY /srcs/index.html           /var/www/
 COPY /srcs/jquery.js            /var/www/
 COPY /srcs/nicepage.css         /var/www/
 COPY /srcs/nicepage.js          /var/www/
-#COPY /srcs/Post-Template.css    /var/www/
+COPY /srcs/Post-Template.css    /var/www/
 
 #Expose les ports 443, 80 et 22 du containeur
 EXPOSE 443 80 22

@@ -39,3 +39,6 @@ spec:                                                             # Specificatio
       - name: wordpress                                                 # Nom donnée au container
         image: service_wordpress                                        # Nom de l'image utilisé
         imagePullPolicy: Never                                          # Forcage de la recuperation de l'image sur le DockerHub
+         ports:
+        - name: wordpress
+          containerPort: 5050

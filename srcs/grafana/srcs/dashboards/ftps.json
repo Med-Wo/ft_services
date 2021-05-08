@@ -15,7 +15,7 @@
     "editable": true,
     "gnetId": null,
     "graphTooltip": 0,
-    "id": 5,
+    "id": 10,
     "links": [],
     "panels": [
       {
@@ -100,7 +100,7 @@
               {
                 "key": "io.kubernetes.container.name",
                 "operator": "=",
-                "value": "telegraf"
+                "value": "ftps"
               }
             ]
           }
@@ -126,7 +126,7 @@
         "fillGradient": 0,
         "gridPos": {
           "h": 6,
-          "w": 11,
+          "w": 10,
           "x": 4,
           "y": 0
         },
@@ -194,7 +194,7 @@
               {
                 "key": "io.kubernetes.container.name",
                 "operator": "=",
-                "value": "telegraf"
+                "value": "ftps"
               }
             ]
           }
@@ -255,8 +255,8 @@
         "fill": 1,
         "fillGradient": 0,
         "gridPos": {
-          "h": 7,
-          "w": 15,
+          "h": 8,
+          "w": 14,
           "x": 0,
           "y": 6
         },
@@ -324,7 +324,7 @@
               {
                 "key": "io.kubernetes.container.name",
                 "operator": "=",
-                "value": "telegraf"
+                "value": "ftps"
               }
             ]
           }
@@ -395,8 +395,8 @@
       ]
     },
     "timezone": "",
-    "title": "telegraf",
-    "uid": "EFRk7BiGk",
-    "version": 2
+    "title": "ftps",
+    "uid": "7odmVBiGz",
+    "version": 1
   }
   

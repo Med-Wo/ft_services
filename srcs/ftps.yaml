@@ -47,8 +47,8 @@ spec:                                                      # Quelle configuratio
         ports:
           - containerPort: 21
             name: "ftps"
-          - containerPort: 4200
-            name: "ftps-pasv-min"
+          - containerPort: 4200                                   # Expose le port du container 4200
+            name: "ftps-pasv-min"                                  #
           - containerPort: 4201
             name: "ftps-pasv-max"
         volumeMounts:

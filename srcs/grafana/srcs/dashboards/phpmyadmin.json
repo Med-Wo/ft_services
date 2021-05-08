@@ -15,7 +15,7 @@
     "editable": true,
     "gnetId": null,
     "graphTooltip": 0,
-    "id": 5,
+    "id": 7,
     "links": [],
     "panels": [
       {
@@ -100,7 +100,7 @@
               {
                 "key": "io.kubernetes.container.name",
                 "operator": "=",
-                "value": "telegraf"
+                "value": "phpmyadmin"
               }
             ]
           }
@@ -194,7 +194,7 @@
               {
                 "key": "io.kubernetes.container.name",
                 "operator": "=",
-                "value": "telegraf"
+                "value": "phpmyadmin"
               }
             ]
           }
@@ -324,7 +324,7 @@
               {
                 "key": "io.kubernetes.container.name",
                 "operator": "=",
-                "value": "telegraf"
+                "value": "phpmyadmin"
               }
             ]
           }
@@ -395,8 +395,8 @@
       ]
     },
     "timezone": "",
-    "title": "telegraf",
-    "uid": "EFRk7BiGk",
-    "version": 2
+    "title": "phpmyadmin",
+    "uid": "MDdP7fmGk",
+    "version": 1
   }
   

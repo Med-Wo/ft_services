@@ -43,13 +43,13 @@ RUN     openssl req -x509 -days 90 \
 RUN		wget https://www.wordpress.org/latest.tar.gz \
 			&& tar -xf latest.tar.gz \
 			&& rm -rf latest.tar.gz
-        
-RUN 		mv wordpress /var/www/wordpress
 
+# Deplacement des fichiers wordpress     
+RUN     mv wordpress /var/www/wordpress
+
+# Copie des fichiers de configuration dans le container
 COPY    /srcs/start_service.sh      /
 COPY    /srcs/wp-config.php         /var/www/wordpress/
 COPY    /srcs/nginx.conf            /etc/nginx/
-
-EXPOSE  5050
 
 ENTRYPOINT ["sh", "start_service.sh"]
