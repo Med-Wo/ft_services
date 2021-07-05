@@ -9,4 +9,4 @@ data:
     - name: default
       protocol: layer2
       addresses:
-      - IP42-IP42
+      - 172.17.0.2-172.17.0.2
