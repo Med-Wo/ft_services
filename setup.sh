@@ -20,13 +20,13 @@ minikube start --vm-driver=docker
 eval $(minikube docker-env)
 
 # Recupere l'adress IP attribuer par minikube
-SERVER_IP=$(minikube ip | grep -oE "\b([0-9]{1,3}\.){3}\b")
+#SERVER_IP=$(minikube ip | grep -oE "\b([0-9]{1,3}\.){3}\b")
 
-sed -i.bak "s/IP/"$SERVER_IP"/g" srcs/metallb-configmap.yaml
-sed -i.bak "s/IP/"$SERVER_IP"/g" srcs/ftps/srcs/vsftpd.conf
+#sed -i.bak "s/IP/"$SERVER_IP"/g" srcs/metallb-configmap.yaml
+#sed -i.bak "s/IP/"$SERVER_IP"/g" srcs/ftps/srcs/vsftpd.conf
 #sed -i.bak "s/IP/"$SERVER_IP"/g" srcs/mysql/srcs/wordpress.sql
-sed -i.bak "s/IP/"$SERVER_IP"/g" srcs/nginx/srcs/index.html
-sed -i.bak "s/IP/"$SERVER_IP"/g" srcs/nginx/srcs/Home.html
+#sed -i.bak "s/IP/"$SERVER_IP"/g" srcs/nginx/srcs/index.html
+#sed -i.bak "s/IP/"$SERVER_IP"/g" srcs/nginx/srcs/Home.html
 
 
 # Generation des certificat SSL (ftps)
