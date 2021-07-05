@@ -7,6 +7,8 @@ PURPLE='\e[0;35m'
 CYAN='\e[0;36m'
 END='\e[0;0m'
 
+sudo usermod -aG docker $(whoami);
+
 # Kill tout les processes.
 minikube delete
 killall -TERM kubectl minikube VBoxHeadless
@@ -21,15 +23,22 @@ eval $(minikube docker-env)
 SERVER_IP=$(minikube ip | grep -oE "\b([0-9]{1,3}\.){3}\b")
 
 # Remplace dans les fichiers IP par l'IP minikube
-sed -i.bak "s/IP/"$SERVER_IP"/g" srcs/metallb-configmap.yaml > /dev/null
-sed -i.bak "s/IP/"$SERVER_IP"/g" srcs/nginx/srcs/index.html > /dev/null
+sed -i.bak "s/IP/"$SERVER_IP"/g" srcs/metallb-configmap.yaml
+sed -i.bak "s/IP/"$SERVER_IP"/g" srcs/ftps/srcs/vsftpd.conf
+#sed -i.bak "s/IP/"$SERVER_IP"/g" srcs/mysql/srcs/wordpress.sql
+sed -i.bak "s/IP/"$SERVER_IP"/g" srcs/nginx/srcs/index.html
+sed -i.bak "s/IP/"$SERVER_IP"/g" srcs/nginx/srcs/Home.html
+
+
+# Generation des certificat SSL (ftps)
+./srcs/generate_ssl.sh > /dev/null
 
 # Construction des images dockers utilise par les services generer ensuite par Kubernetes
 # "> /dev/null 2>&1" redirige la sortie du programme vers /dev/null.
 # Incluant à la fois l'erreur standard et la sortie standard
 echo "${CYAN}🐳${END}  ${BLUE}Build des images Docker...${END}"
 docker build -t service_nginx ./srcs/nginx > /dev/null 2>&1
-docker build -t service_mysql ./srcs/mysql 
+docker build -t service_mysql ./srcs/mysql > /dev/null 2>&1
 docker build -t service_phpmyadmin ./srcs/phpmyadmin > /dev/null 2>&1
 docker build -t service_wordpress ./srcs/wordpress > /dev/null 2>&1
 docker build -t service_ftps ./srcs/ftps > /dev/null 2>&1
@@ -47,7 +56,6 @@ kubectl create secret generic telegraf-secret \
     --from-literal=influxdb_db='telegraf' --from-literal=influxdb_url='http://influxdb-svc:8086'
 echo "${GREEN}😄  ${GREEN}Done${END}"
 
-sh ./srcs/generate_ssl.sh
 
 kubectl create secret tls ftps-ssl --cert ./srcs/ftps/srcs/vsftpd.crt --key ./srcs/ftps/srcs/vsftpd.key
 
@@ -59,7 +67,7 @@ echo "${RED}🚀${END}  ${BLUE}Creation des differents pods/services...${END}"
 kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.9.5/manifests/namespace.yaml > /dev/null 2>&1
 kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.9.5/manifests/metallb.yaml > /dev/null 2>&1
 kubectl apply -f srcs/metallb-configmap.yaml > /dev/null 2>&1
-kubectl apply -f srcs/mysql.yaml
+kubectl apply -f srcs/mysql.yaml > /dev/null 2>&1
 kubectl apply -f srcs/phpmyadmin.yaml > /dev/null 2>&1
 kubectl apply -f srcs/wordpress.yaml > /dev/null 2>&1
 kubectl apply -f srcs/ftps.yaml > /dev/null 2>&1

@@ -22,4 +22,3 @@ pkill mysqld
 
 # Lance le Deamon MySQL
 mysqld
-

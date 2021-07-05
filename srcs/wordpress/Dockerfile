@@ -25,20 +25,6 @@ RUN     apk add php7-fpm php7-mcrypt php7-soap \
 				php7-bz2 php7-iconv php7-pdo_dblib php7-curl \
 				php7-ctype
 
-# Commande OpenSSL pour générer une clef privée et un certificat auto-signé pour notre webservice(nginx).
-    # Pour commencer on utilise le gestionnaires des demandes de certificats X.509 avec une duree de vie de 90 jours 
-    # On indique le nom de sortie du certificat
-    # On indique le nom de sortie de la cle privee
-    # On indique le format de notre nouvelle cle prive type:bits
-    # On ne pas crypter la clé de sortie avec -nodes
-    # on condense le message en SHA-256
-    # et pour finir on defini des informations pour notre certifcats (Pays, Ville, Organisation et Nom)
-RUN     openssl req -x509 -days 90 \
-            -out /etc/ssl/certs/wordpress.crt \
-            -keyout /etc/ssl/wordpress.key \
-            -newkey rsa:4096 -nodes -sha256 \
-            -subj '/ST=France/L=Paris/O=42/CN=wordpress'
-
 # Telechargement de Wordpress
 RUN		wget https://www.wordpress.org/latest.tar.gz \
 			&& tar -xf latest.tar.gz \

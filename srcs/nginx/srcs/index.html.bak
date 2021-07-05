@@ -32,7 +32,7 @@ the future together, Let's work together, About Us, Built on a Strong Foundation
     <meta property="og:url" content="index.html">
   </head>
   <body data-home-page="Home.html" data-home-page-title="Home" class="u-body"><header class="u-clearfix u-header u-header" id="sec-5ef1"><div class="u-clearfix u-sheet u-valign-middle u-sheet-1">
-        <a href="https://nicepage.com" class="u-image u-logo u-image-1" data-image-width="1200" data-image-height="1200">
+        <a href="https://192.168.49.42" class="u-image u-logo u-image-1" data-image-width="1200" data-image-height="1200">
           <img src="images/42_Logo.svg.png" class="u-logo-image u-logo-image-1" data-image-width="64">
         </a>
         <h1 class="u-text u-text-default u-text-1">FT_SERVICES</h1>
@@ -172,7 +172,7 @@ the future together, Let's work together, About Us, Built on a Strong Foundation
     
     
     <footer class="u-align-center-md u-align-center-sm u-align-center-xs u-clearfix u-footer u-grey-80" id="sec-69cd"><div class="u-clearfix u-sheet u-sheet-1">
-        <a href="https://nicepage.com" class="u-image u-logo u-image-1" data-image-width="1200" data-image-height="1200">
+        <a href="https://192.168.49.42" class="u-image u-logo u-image-1" data-image-width="1200" data-image-height="1200">
           <img src="images/42_Logo.svg.png" class="u-logo-image u-logo-image-1" data-image-width="116.25">
         </a>
         <p class="u-align-center-lg u-align-center-md u-align-center-xl u-text u-text-1">BORN TO <span style="font-weight: 700;"></span>CODE
